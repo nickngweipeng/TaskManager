@@ -16,7 +16,7 @@ import java.util.Calendar;
 public class AddActivity extends AppCompatActivity {
 
     Button btnAdd, btnCancel;
-    EditText etName, etDesc;
+    EditText etName, etDesc, etRemind;
     DBHelper db;
     Intent i;
     int reqCode = 12345;
@@ -28,6 +28,7 @@ public class AddActivity extends AppCompatActivity {
         btnAdd = (Button)findViewById(R.id.btnAdd);
         etName = (EditText)findViewById(R.id.etName);
         etDesc = (EditText)findViewById(R.id.etDesc);
+        etRemind = (EditText)findViewById(R.id.etRemind);
         db = new DBHelper(AddActivity.this);
 
         i = getIntent();
@@ -37,13 +38,14 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String name = etName.getText().toString();
                 String desc = etDesc.getText().toString();
+                int sec = Integer.parseInt(etRemind.getText().toString());
 
                 db.insertTask(name, desc);
                 Toast.makeText(AddActivity.this, "Added Task", Toast.LENGTH_LONG);
                 db.close();
                 setResult(RESULT_OK, i);
                 Calendar cal = Calendar.getInstance();
-                cal.add(Calendar.SECOND, 5);
+                cal.add(Calendar.SECOND, sec);
 
                 Intent intent = new Intent(AddActivity.this, TaskBroadcastReceiver.class);
                 intent.putExtra("name", name);
